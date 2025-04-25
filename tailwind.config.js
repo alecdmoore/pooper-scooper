@@ -8,34 +8,25 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // Define colors from your Figma design
+        // Example:
         primary: {
-          50: "#f5f8f7",
-          100: "#e0eae7",
-          200: "#c1d6d0",
-          300: "#9bbbb2",
-          400: "#739c91",
-          500: "#568276", // Main primary color
-          600: "#44675e",
-          700: "#38544d",
-          800: "#2f433e",
-          900: "#293836",
+          DEFAULT: "#00A0A0", // Example Teal color
+          dark: "#007F7F",
         },
-        secondary: {
-          50: "#fef8ec",
-          100: "#fdedc8",
-          200: "#fbda91",
-          300: "#f8c14f", // Main secondary color
-          400: "#f6ab22",
-          500: "#e68e09",
-          600: "#c26d07",
-          700: "#9b4e0c",
-          800: "#7e4010",
-          900: "#693512",
-        },
+        secondary: "#FFA500", // Example Orange
+        dark: "#333333",
+        light: "#F8F8F8",
+        // ... other colors
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],
         display: ["Montserrat", "sans-serif"],
+      },
+      backgroundImage: {
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
     },
   },

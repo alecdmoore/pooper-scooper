@@ -1,82 +1,85 @@
 "use client";
-// src/components/layout/Navbar.tsx
-import Link from "next/link";
-import Image from "next/image";
-import { useState } from "react";
+// src/components/Navbar.tsx
+import React, { useState } from "react";
 
-export default function Navbar() {
+const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
-    <nav className="bg-white shadow-sm">
+    <nav className="bg-white shadow-sm sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex">
-            <Link href="/" className="flex-shrink-0 flex items-center">
-              <span className="font-display text-xl font-bold text-primary-600">
-                DogPoop Pro
-              </span>
-            </Link>
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <Link
-                href="/"
-                className="border-primary-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+        <div className="flex justify-between items-center h-16">
+          {/* Logo */}
+          <div className="flex-shrink-0 flex items-center">
+            <span className="text-2xl font-bold text-teal-600">
+              Swoop Scoop®
+            </span>
+          </div>
+
+          {/* Desktop Navigation Links */}
+          <div className="hidden md:flex md:items-center">
+            <div className="ml-10 flex items-center space-x-4">
+              <a
+                href="#"
+                className="text-gray-700 hover:text-teal-600 px-3 py-2"
               >
-                Home
-              </Link>
-              <Link
-                href="/services"
-                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                Client Login
+              </a>
+              <a
+                href="#"
+                className="text-gray-700 hover:text-teal-600 px-3 py-2"
               >
                 Services
-              </Link>
-              <Link
-                href="/pricing"
-                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+              </a>
+              <a
+                href="#"
+                className="text-gray-700 hover:text-teal-600 px-3 py-2"
               >
-                Pricing
-              </Link>
-              <Link
-                href="/contact"
-                className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                Refer a Friend
+              </a>
+              <a
+                href="#"
+                className="text-gray-700 hover:text-teal-600 px-3 py-2"
               >
-                Contact
-              </Link>
+                FAQ
+              </a>
+              <a
+                href="#"
+                className="text-gray-700 hover:text-teal-600 px-3 py-2"
+              >
+                About
+              </a>
+              <a
+                href="#"
+                className="text-gray-700 hover:text-teal-600 px-3 py-2"
+              >
+                Locations
+              </a>
+              <a
+                href="#"
+                className="ml-4 bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-md font-medium"
+              >
+                Free Quote
+              </a>
             </div>
           </div>
-          <div className="hidden sm:ml-6 sm:flex sm:items-center">
-            <Link
-              href="/book-now"
-              className="bg-secondary-400 hover:bg-secondary-500 text-white font-medium py-2 px-4 rounded-md"
-            >
-              Book Now
-            </Link>
-          </div>
-          <div className="-mr-2 flex items-center sm:hidden">
+
+          {/* Mobile menu button */}
+          <div className="md:hidden">
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
+              type="button"
+              className="text-gray-700 hover:text-teal-600 focus:outline-none"
+              onClick={toggleMenu}
+              aria-expanded={isMenuOpen}
             >
               <span className="sr-only">Open main menu</span>
-              {!isMenuOpen ? (
+              {isMenuOpen ? (
                 <svg
-                  className="block h-6 w-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="block h-6 w-6"
+                  className="h-6 w-6"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -90,49 +93,81 @@ export default function Navbar() {
                     d="M6 18L18 6M6 6l12 12"
                   />
                 </svg>
+              ) : (
+                <svg
+                  className="h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
               )}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Mobile menu, show/hide based on menu state */}
+      {/* Mobile Menu Dropdown */}
       {isMenuOpen && (
-        <div className="sm:hidden">
-          <div className="pt-2 pb-3 space-y-1">
-            <Link
-              href="/"
-              className="bg-primary-50 border-primary-500 text-primary-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+        <div className="md:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <a
+              href="#"
+              className="block text-gray-700 hover:text-teal-600 px-3 py-2"
             >
-              Home
-            </Link>
-            <Link
-              href="/services"
-              className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+              Client Login
+            </a>
+            <a
+              href="#"
+              className="block text-gray-700 hover:text-teal-600 px-3 py-2"
             >
               Services
-            </Link>
-            <Link
-              href="/pricing"
-              className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+            </a>
+            <a
+              href="#"
+              className="block text-gray-700 hover:text-teal-600 px-3 py-2"
             >
-              Pricing
-            </Link>
-            <Link
-              href="/contact"
-              className="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium"
+              Refer a Friend
+            </a>
+            <a
+              href="#"
+              className="block text-gray-700 hover:text-teal-600 px-3 py-2"
             >
-              Contact
-            </Link>
-            <Link
-              href="/book-now"
-              className="block w-full text-center bg-secondary-400 hover:bg-secondary-500 text-white font-medium py-2 px-4 rounded-md mt-4 mx-2"
+              FAQ
+            </a>
+            <a
+              href="#"
+              className="block text-gray-700 hover:text-teal-600 px-3 py-2"
             >
-              Book Now
-            </Link>
+              About
+            </a>
+            <a
+              href="#"
+              className="block text-gray-700 hover:text-teal-600 px-3 py-2"
+            >
+              Locations
+            </a>
+            <div className="mt-4">
+              <a
+                href="#"
+                className="block w-full text-center bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded-md font-medium"
+              >
+                Free Quote
+              </a>
+            </div>
           </div>
         </div>
       )}
     </nav>
   );
-}
+};
+
+export default Navbar;
