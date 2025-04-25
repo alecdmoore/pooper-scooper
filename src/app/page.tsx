@@ -1,10 +1,17 @@
-"use client";
 // src/app/page.tsx
-// import Navbar from "@/components/layout/Navbar";
-import PawPrintBackground from "@/components/PawPrintBackground";
+"use client";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import React, { useState, useEffect, useRef } from "react";
+// Assuming PawPrintBackground is correctly imported from its location
+import PawPrintBackground from "@/components/PawPrintBackground";
+import CustomerPromise from "@/components/sections/CustomerPromise";
+import ResidentialServices from "@/components/sections/ResidentialServices";
+import CommericalServices from "@/components/sections/CommericalServices";
+import WhyChooseSection from "@/components/sections/WhyChooseSection";
+import CaliforniaLocations from "@/components/sections/CaliforniaLocations";
+
+// --- Component Definitions (YouTubeIcon, NavItem, Navbar, QuoteInput) remain the same ---
 
 interface YouTubeIconProps {
   className?: string;
@@ -121,7 +128,8 @@ const NavItem: React.FC<NavItemProps> = ({
           {/* Dropdown Menu */}
           {dropdown && dropdownItems && dropdownItems.length > 0 && (
             <div
-              className={`absolute z-10 mt-3 w-48 bg-white rounded-4xl shadow-lg py-1 px-1 transition-opacity duration-200 ${
+              className={`absolute z-10 mt-3 w-48 bg-white rounded-xl shadow-lg py-1 px-1 transition-opacity duration-200 ${
+                // Adjusted rounding
                 isOpen ? "opacity-100 visible" : "opacity-0 invisible"
               }`}
             >
@@ -129,7 +137,7 @@ const NavItem: React.FC<NavItemProps> = ({
                 <a
                   key={index}
                   href={item.href}
-                  className="block px-10 py-4 rounded-4xl text-gray-700 hover:bg-teal-500 hover:text-white transition-all duration-200"
+                  className="block px-4 py-2 rounded-lg text-gray-700 hover:bg-teal-500 hover:text-white transition-all duration-200" // Adjusted padding/rounding
                 >
                   {item.label}
                 </a>
@@ -154,16 +162,15 @@ const Navbar: React.FC = () => {
   ];
 
   return (
-    <div className="w-fit  py-4">
+    <div className="w-fit py-4">
       <div className="container mx-auto px-4">
-        <nav className="flex flex-wrap items-center justify-center  rounded-full bg-white shadow-md p-2 md:gap-x-4">
+        <nav className="flex flex-wrap items-center justify-center rounded-full bg-white shadow-md p-2 md:gap-x-4">
           <NavItem dropdown dropdownItems={serviceItems}>
             Services
           </NavItem>
           <NavItem href="#">Refer a Friend</NavItem>
           <NavItem href="#">FAQ</NavItem>
           <NavItem href="#">About</NavItem>
-
           <NavItem dropdown dropdownItems={locationItems}>
             Locations
           </NavItem>
@@ -176,6 +183,17 @@ const Navbar: React.FC = () => {
 const QuoteInput = () => {
   const [inputValue, setInputValue] = useState("");
 
+  // Simple message box state
+  const [showMessage, setShowMessage] = useState(false);
+
+  const handleQuoteClick = () => {
+    // Instead of alert, show a message box
+    setShowMessage(true);
+    // Hide message after 3 seconds
+    setTimeout(() => setShowMessage(false), 3000);
+    console.log("Zip code entered:", inputValue);
+  };
+
   return (
     <div className="relative flex items-center max-w-md">
       {/* Text input field */}
@@ -184,213 +202,162 @@ const QuoteInput = () => {
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
         placeholder="Enter your Zip Code"
-        className="w-full py-4 px-6 pr-36 rounded-full border bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent"
+        className="w-full py-4 px-6 pr-36 rounded-full border bg-white border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent text-black" // Ensure text is visible
       />
 
       {/* Button positioned inside the input */}
-      <div
-        className="absolute right-2 w-fit h-fit py-2 px-4 rounded-full bg-red-400 text-white text-lg cursor-pointer transition-colors hover:bg-red-500"
-        onClick={() => {
-          alert("Coming Soon!");
-          // You can also add logic to handle the input value here
-          console.log("Email entered:", inputValue);
-        }}
+      <button // Use button for better accessibility
+        type="button"
+        className="absolute right-2 py-2 px-4 rounded-full bg-red-400 text-white text-lg cursor-pointer transition-colors hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2"
+        onClick={handleQuoteClick}
       >
         Free Quote
-      </div>
+      </button>
+
+      {/* Simple Message Box */}
+      {showMessage && (
+        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-700 text-white text-sm rounded-md shadow-lg whitespace-nowrap">
+          Coming Soon!
+        </div>
+      )}
     </div>
   );
 };
 
-// export default Navbar;
-
+// --- Main Home Component ---
 export default function Home() {
+  // Simple message box state for the top "Free Quote" button
+  const [showTopQuoteMessage, setShowTopQuoteMessage] = useState(false);
+
+  const handleTopQuoteClick = () => {
+    setShowTopQuoteMessage(true);
+    setTimeout(() => setShowTopQuoteMessage(false), 3000);
+  };
+
   return (
-    <main>
-      <div className="w-full flex justify-center py-3 bg-gray-50 text-black">
-        <Link href="/book-now">Claim Your Free Cleaning Today!</Link>
+    <main className="bg-gray-100">
+      {" "}
+      {/* Added a light background to main */}
+      {/* Top Banner */}
+      <div className="w-full flex justify-center pt-4 text-black font-semibold">
+        {" "}
+        {/* Styled banner */}
+        <Link href="/book-now" className=" hover:underline">
+          Claim Your Free Cleaning Today!
+        </Link>
       </div>
-      <div className="relative w-[99%] h-[700px] flex flex-col mx-auto  bg-blue-500 rounded-4xl text-black overflow-hidden ">
-        <PawPrintBackground />
-        {/* <div className="w-full h-full absolute  bg-black"></div> */}
-        {/* Top section - will only take up the space it needs */}
-        <div className=" h-fit w-full max-w-7xl flex justify-end items-start mx-auto">
-          <Link className="mr-[85px] pt-4" href="/login">
-            Client Login
-          </Link>
-        </div>
-
-        <div className=" h-fit w-full max-w-7xl flex justify-around items-start mx-auto ">
-          <Image
-            src="/images/poopyscoop-retro.webp"
-            alt="Logo"
-            width={200}
-            height={200}
-            className="rounded-4xl"
-          />
-          <Navbar />
-          <div className="py-4">
-            <div
-              className="w-fit h-fit py-4 px-6 rounded-full bg-red-400 text-white text-xl"
-              onClick={() => alert("Coming Soon!")}
+      {/* Hero Section */}
+      <div className="relative w-[99%] min-h-[80vh] flex flex-col mx-auto my-4 bg-blue-500 rounded-3xl text-black overflow-hidden shadow-lg">
+        {" "}
+        {/* Adjusted rounding, added shadow */}
+        {/* Background Paw Prints - Placed first, z-0 */}
+        <PawPrintBackground className="text-blue-300" />{" "}
+        {/* Optional: Pass color via text color */}
+        {/* Foreground Content Container - Placed second, relative z-10 */}
+        <div className="relative z-10 flex flex-col flex-grow w-full h-full">
+          {/* Top Right Login Link */}
+          <div className="w-full max-w-7xl flex justify-end items-start c">
+            {/* <Link
+              className="pt-4 font-medium hover:text-gray-200"
+              href="/login"
             >
-              Free Quote
-            </div>
+              Client Login
+            </Link> */}
           </div>
-        </div>
-        <div className="flex-grow w-full max-w-7xl flex flex-col  justify-center items-start gap-y-2 mx-auto pl-16">
-          <div className="flex flex-col gap-y-2">
-            <div className="text-3xl  text-white">Southern California's</div>
-            <div className="text-7xl font-bold text-white">Pooper Scooper</div>
-            <div className="text-7xl font-bold text-white">Service</div>
-            <div className="text-2xl font-thin text-white">
-              Get your free quote to get started!
-            </div>
-            {/* <div
-              className="w-fit h-fit py-4 px-6 rounded-full bg-red-400 text-white text-xl"
-              onClick={() => alert("Coming Soon!")}
-            >
-              Free Quote
-            </div> */}
-            <QuoteInput />
-            <div className="flex gap-x-2 items-center text-white hover:text-black">
-              <YouTubeIcon color={"white"} />
-              <div className="text-2xl font-semibold text-current">
-                See how it works
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="bg-primary-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-24">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h1 className="text-4xl font-bold text-gray-900 font-display md:text-5xl">
-                Professional Dog Waste Removal Service
-              </h1>
-              <p className="mt-4 text-xl text-gray-600">
-                Keep your yard clean and your time free. We handle the mess so
-                you don't have to.
-              </p>
-              <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="/book-now"
-                  className="bg-secondary-400 hover:bg-secondary-500 text-white font-medium py-3 px-6 rounded-md text-center"
-                >
-                  Book Our Service
-                </Link>
-                <Link
-                  href="/pricing"
-                  className="bg-white hover:bg-gray-50 text-primary-600 font-medium py-3 px-6 rounded-md border border-primary-600 text-center"
-                >
-                  View Pricing
-                </Link>
-              </div>
-            </div>
-            <div className="hidden md:block">
-              {/* Replace with your actual image once you have it */}
-              <div className="bg-gray-300 w-full h-96 rounded-lg flex items-center justify-center text-gray-500">
-                Dog Image Placeholder
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
+          {/* Logo, Navbar, Top Quote Button */}
+          <div className="w-full max-w-7xl flex flex-wrap justify-between items-center mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div className="flex-shrink-0">
+              {" "}
+              {/* Logo container */}
+              <Image
+                src="/images/poopyscoop-retro.webp" // Ensure this path is correct
+                alt="PoopyScoop Retro Logo"
+                width={180} // Adjusted size
+                height={180} // Adjusted size
+                className="rounded-2xl" // Adjusted rounding
+                priority // Prioritize loading logo
+                onError={(e) =>
+                  (e.currentTarget.src =
+                    "https://placehold.co/180x180/cccccc/ffffff?text=Logo")
+                } // Placeholder fallback
+              />
+            </div>
+            <div className="flex-grow flex justify-center">
+              {" "}
+              {/* Navbar container */}
+              <Navbar />
+            </div>
+            <div className="relative flex-shrink-0 py-4">
+              {" "}
+              {/* Top Quote Button container */}
+              <button // Use button for better accessibility
+                type="button"
+                className="py-3 px-6 rounded-full bg-red-400 text-white text-lg font-semibold cursor-pointer transition-colors hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-2"
+                onClick={handleTopQuoteClick}
+              >
+                Free Quote
+              </button>
+              {/* Simple Message Box for Top Quote Button */}
+              {showTopQuoteMessage && (
+                <div className="absolute top-full right-0 mt-2 px-3 py-1 bg-gray-700 text-white text-sm rounded-md shadow-lg whitespace-nowrap">
+                  Coming Soon!
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Main Hero Text and Input */}
+          <div className="flex-grow w-full max-w-7xl flex flex-col justify-center items-start gap-y-3 mx-auto px-4 sm:px-6 lg:px-16 pb-16">
+            {" "}
+            {/* Adjusted padding */}
+            <div className="flex flex-col gap-y-2">
+              <div className="text-2xl md:text-3xl text-white">
+                Southern California's
+              </div>
+              <div className="text-5xl md:text-7xl font-bold text-white">
+                Pooper Scooper
+              </div>
+              <div className="text-5xl md:text-7xl font-bold text-white">
+                Service
+              </div>
+              <div className="text-xl md:text-2xl font-light text-white mt-2">
+                Get your free quote to get started!
+              </div>
+              <div className="mt-4">
+                {" "}
+                {/* Added margin top */}
+                <QuoteInput />
+              </div>
+              <Link
+                href="#"
+                className="mt-4 flex gap-x-2 items-center text-white hover:text-gray-200 group"
+              >
+                {" "}
+                {/* Added margin top and Link */}
+                <YouTubeIcon
+                  color={"white"}
+                  size={28}
+                  className="group-hover:scale-110 transition-transform"
+                />
+                <div className="text-xl font-semibold text-current">
+                  See how it works
+                </div>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Hero Section Below (Professional Service) */}
       {/* Features Section */}
-      <div className="py-12 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-3xl font-extrabold text-gray-900 font-display sm:text-4xl">
-              Why Choose Our Service?
-            </h2>
-            <p className="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
-              Professional, reliable, and thorough dog waste removal.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-8 md:grid-cols-3">
-            {/* Feature 1 */}
-            <div className="bg-primary-50 p-6 rounded-lg">
-              <div className="bg-primary-500 inline-flex p-3 rounded-md">
-                <svg
-                  className="h-6 w-6 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-              <h3 className="mt-4 text-lg font-medium text-gray-900">
-                Regular Schedule
-              </h3>
-              <p className="mt-2 text-gray-600">
-                Weekly, bi-weekly, or one-time services to fit your needs.
-              </p>
-            </div>
-
-            {/* Feature 2 */}
-            <div className="bg-primary-50 p-6 rounded-lg">
-              <div className="bg-primary-500 inline-flex p-3 rounded-md">
-                <svg
-                  className="h-6 w-6 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-              </div>
-              <h3 className="mt-4 text-lg font-medium text-gray-900">
-                Thorough Cleaning
-              </h3>
-              <p className="mt-2 text-gray-600">
-                We scan your entire yard to ensure no waste is left behind.
-              </p>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="bg-primary-50 p-6 rounded-lg">
-              <div className="bg-primary-500 inline-flex p-3 rounded-md">
-                <svg
-                  className="h-6 w-6 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                  />
-                </svg>
-              </div>
-              <h3 className="mt-4 text-lg font-medium text-gray-900">
-                Eco-Friendly
-              </h3>
-              <p className="mt-2 text-gray-600">
-                We use eco-friendly disposal methods for all waste.
-              </p>
-            </div>
-          </div>
-        </div>
+      <div className="flex flex-col gap-10 p-16 mx-auto px-4 sm:px-6 lg:px-8 bg-white">
+        <CustomerPromise /> {/* Adjusted padding */}
+        <ResidentialServices />
+        <CommericalServices />
+        <WhyChooseSection />
+        <CaliforniaLocations />
       </div>
+      {/* Add Footer Section Here */}
     </main>
   );
 }
